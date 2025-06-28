@@ -1,0 +1,12 @@
+import { ReactNode } from 'react';
+
+import { cn } from '@/utils/cn';
+
+interface CardDescriptionProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export default function CardDescription({ children, className }: CardDescriptionProps) {
+  return <p className={cn('my-2 text-sm text-gray-600', className)}>{children}</p>;
+}
