@@ -14,10 +14,16 @@ export interface AccessibleElement {
 export default function analyzeAccessibility(code: string): AccessibleElement[] {
   const results: AccessibleElement[] = [];
 
-  const ast = parse(code, {
-    sourceType: 'module',
-    plugins: ['jsx', 'typescript'],
-  });
+  let ast: t.File;
+  try {
+    ast = parse(code, {
+      sourceType: 'module',
+      plugins: ['jsx', 'typescript'],
+    });
+  } catch (error) {
+    console.warn('Failed to parse code:', error);
+    return [];
+  }
 
   traverse(ast, {
     JSXElement(path: NodePath<t.JSXElement>) {
