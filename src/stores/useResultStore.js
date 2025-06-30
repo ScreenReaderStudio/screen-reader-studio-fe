@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 export const useResultStore = create(
   persist(
     (set) => ({
-      result: [],
+      result: { script: [] },
 
       setResult: (result) => set({ result }),
     }),
