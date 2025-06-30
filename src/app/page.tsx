@@ -26,7 +26,7 @@ export default function Home() {
               <Image src="/eye.svg" alt="결과 아이콘" width={24} height={24} priority />
               분석 결과
             </CardTitle>
-            <CardDescription>React 또는 Next.js 컴포넌트 코드를 입력하세요</CardDescription>
+            <CardDescription>스크린 리더 대본과 접근성 이슈를 확인하세요</CardDescription>
           </CardHeader>
           <CardContent>
             <ResultViewer />
