@@ -2,6 +2,8 @@ import { parse } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 
+import extractPropsFromAttributes from '@/utils/ast/extractPropsFromAttributes';
+import extractTextFromChildren from '@/utils/ast/extractTextFromChildren';
 import getJSXTagName from '@/utils/ast/getJSXTagName';
 
 export interface AccessibleElement {
@@ -33,42 +35,10 @@ export default function analyzeAccessibility(code: string): AccessibleElement[] 
         return;
       }
 
-      const tag = getJSXTagName(openingEl.name);
-
-      let text = '';
-      path.node.children.forEach((child) => {
-        if (t.isJSXText(child)) {
-          text += child.value.trim();
-        } else if (t.isJSXExpressionContainer(child) && t.isStringLiteral(child.expression)) {
-          text += child.expression.value;
-        }
-      });
-
-      const props: Record<string, string | number | boolean> = {};
-      openingEl.attributes.forEach((attr) => {
-        if (t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name)) {
-          const key = attr.name.name;
-          const valueNode = attr.value;
-
-          if (t.isStringLiteral(valueNode)) {
-            props[key] = valueNode.value;
-          } else if (t.isJSXExpressionContainer(valueNode) && valueNode.expression) {
-            const expr = valueNode.expression;
-            if (t.isStringLiteral(expr)) {
-              props[key] = expr.value;
-            } else if (t.isNumericLiteral(expr)) {
-              props[key] = expr.value;
-            } else if (t.isBooleanLiteral(expr)) {
-              props[key] = expr.value;
-            }
-          }
-        }
-      });
-
       results.push({
-        tag,
-        text,
-        props,
+        tag: getJSXTagName(openingEl.name),
+        text: extractTextFromChildren(path.node.children),
+        props: extractPropsFromAttributes(openingEl.attributes),
         loc: path.node.loc
           ? {
               start: path.node.loc.start.line,
