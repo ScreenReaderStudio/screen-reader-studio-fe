@@ -19,12 +19,20 @@ export default function TabsTrigger({ children, className, value }: TabsTriggerP
       type="button"
       role="tab"
       aria-selected={isActive}
+      aria-controls={`tabpanel-${value}`}
+      tabIndex={isActive ? 0 : -1}
       className={cn(
         'inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all',
         isActive ? 'bg-white' : 'text-muted-foreground',
         className
       )}
       onClick={() => setSelectedTab(value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setSelectedTab(value);
+        }
+      }}
     >
       {children}
     </button>
