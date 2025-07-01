@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { useResultStore } from '@/stores/useResultStore';
 import formatAccessibilityIssueResult from '@/utils/format/formatAccessibilityIssueResult';
-import formatResultsForDisplay from '@/utils/format/formatResultsForDisplay';
+import formatScreenReaderScriptResult from '@/utils/format/formatScreenReaderScriptResult';
 
 export default function ResultViewer() {
   const result = useResultStore((state) => state.result);
@@ -16,7 +16,7 @@ export default function ResultViewer() {
     );
   }
 
-  const formatted = formatResultsForDisplay(result.script);
+  const formattedScript = formatScreenReaderScriptResult(result.script);
   const formattedIssues = formatAccessibilityIssueResult(result.warnings);
 
   return (
@@ -29,7 +29,7 @@ export default function ResultViewer() {
       <TabsContent value="script" className="space-y-2">
         <div className="h-[324px] overflow-scroll">
           <ul className="space-y-2 text-sm text-gray-700">
-            {formatted.map((item: string[], idx: number) => (
+            {formattedScript.map((item: string[], idx: number) => (
               <li key={idx} className="flex gap-3 rounded-lg bg-gray-50 p-3">
                 <div className="flex items-center">{idx + 1}</div>
                 <div className="flex-1">
