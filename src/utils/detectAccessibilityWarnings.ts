@@ -1,6 +1,6 @@
 import { AccessibleElement } from '@/utils/ast/analyzeAccessibility';
 
-export function detectAccessibilityWarnings(elements: AccessibleElement[]): string[] {
+export default function detectAccessibilityWarnings(elements: AccessibleElement[]): string[] {
   const warnings: string[] = [];
 
   elements.forEach((el, idx) => {
