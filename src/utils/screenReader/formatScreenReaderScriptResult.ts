@@ -12,7 +12,7 @@ export default function formatScreenReaderScriptResult(rawResults: string[]): st
       .trim();
 
     const content = cleanedText || placeholder || '';
-    const result: string[] = [type, content];
+    const result = [type, content];
 
     if (placeholder) {
       result.push(placeholder);
