@@ -6,6 +6,6 @@ const CodeEditor = dynamic(() => import('@/components/CodeEditor'), {
   ssr: false,
 });
 
-export default function ClientEditorWrapper() {
+export default function AccessibilityAnalyzer() {
   return <CodeEditor />;
 }

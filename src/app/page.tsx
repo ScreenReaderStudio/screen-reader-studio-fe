@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import ClientEditorWrapper from '@/components/ClientEditorWrapper';
+import AccessibilityAnalyzer from '@/components/AccessibilityAnalyzer';
 import ResultViewer from '@/components/ResultViewer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 
@@ -17,7 +17,7 @@ export default function Home() {
             <CardDescription>React 또는 Next.js 컴포넌트 코드를 입력하세요</CardDescription>
           </CardHeader>
           <CardContent>
-            <ClientEditorWrapper />
+            <AccessibilityAnalyzer />
           </CardContent>
         </Card>
         <Card>
