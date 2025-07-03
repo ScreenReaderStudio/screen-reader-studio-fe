@@ -3,11 +3,11 @@
 import { javascript } from '@codemirror/lang-javascript';
 import CodeMirror from '@uiw/react-codemirror';
 
-import { useCodeStore } from '@/stores/useCodeStore';
+import { useInputStore } from '@/stores/useInputStore';
 
 export default function CodeEditor() {
-  const code = useCodeStore((state) => state.code);
-  const setCode = useCodeStore((state) => state.setCode);
+  const code = useInputStore((state) => state.code);
+  const setCode = useInputStore((state) => state.setCode);
 
   const onChange = (value: string) => {
     setCode(value);

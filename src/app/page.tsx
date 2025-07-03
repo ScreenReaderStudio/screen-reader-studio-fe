@@ -11,10 +11,10 @@ export default function Home() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <Image src="/code.svg" alt="코드 아이콘" width={24} height={24} priority />
-              코드 입력
+              <Image src="/folded.svg" alt="분석 대상 아이콘" width={24} height={24} priority />
+              분석 대상 입력
             </CardTitle>
-            <CardDescription>React 또는 Next.js 컴포넌트 코드를 입력하세요</CardDescription>
+            <CardDescription>코드를 직접 입력하거나 웹페이지 URL을 입력하세요</CardDescription>
           </CardHeader>
           <CardContent>
             <AccessibilityAnalyzer />
