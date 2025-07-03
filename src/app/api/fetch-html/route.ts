@@ -17,6 +17,19 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const urlObj = new URL(url);
+    if (!['http:', 'https:'].includes(urlObj.protocol)) {
+      return new Response(JSON.stringify({ error: 'Only HTTP and HTTPS URLs are allowed' }), {
+        status: 400,
+      });
+    }
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid URL format' }), {
+      status: 400,
+    });
+  }
+
+  try {
     const response = await fetch(url);
     const html = await response.text();
 
