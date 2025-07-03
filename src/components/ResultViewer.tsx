@@ -15,7 +15,7 @@ export default function ResultViewer() {
   }
 
   return (
-    <Tabs className="w-full">
+    <Tabs className="w-full" defaultValue="script">
       <TabsList className="mb-1.5 grid w-full grid-cols-2">
         <TabsTrigger value="script">스크린 리더 대본</TabsTrigger>
         <TabsTrigger value="issue">접근성 이슈</TabsTrigger>

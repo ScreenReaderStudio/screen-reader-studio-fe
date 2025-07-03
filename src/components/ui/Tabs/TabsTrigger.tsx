@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { useResultStore } from '@/stores/useResultStore';
+import { useTabsContext } from '@/components/ui/Tabs/context';
 import { cn } from '@/utils/cn';
 
 interface TabsTriggerProps {
@@ -10,8 +10,7 @@ interface TabsTriggerProps {
 }
 
 export default function TabsTrigger({ children, className, value }: TabsTriggerProps) {
-  const selectedTab = useResultStore((state) => state.selectedTab);
-  const setSelectedTab = useResultStore((state) => state.setSelectedTab);
+  const { selectedTab, setSelectedTab } = useTabsContext();
   const isActive = selectedTab === value;
 
   return (

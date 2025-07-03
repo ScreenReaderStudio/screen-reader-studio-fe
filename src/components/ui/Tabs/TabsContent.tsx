@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { useResultStore } from '@/stores/useResultStore';
+import { useTabsContext } from '@/components/ui/Tabs/context';
 import { cn } from '@/utils/cn';
 
 interface TabsContentProps {
@@ -10,7 +10,7 @@ interface TabsContentProps {
 }
 
 export default function TabsContent({ children, className, value }: TabsContentProps) {
-  const selectedTab = useResultStore((state) => state.selectedTab);
+  const { selectedTab } = useTabsContext();
 
   if (selectedTab !== value) {
     return null;
