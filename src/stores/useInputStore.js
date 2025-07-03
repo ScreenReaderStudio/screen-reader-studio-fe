@@ -1,15 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export const useCodeStore = create(
+export const useInputStore = create(
   persist(
     (set) => ({
       code: '',
+      url: '',
 
       setCode: (code) => set({ code }),
+      setUrl: (url) => set({ url }),
     }),
     {
-      name: 'code-storage',
+      name: 'input-storage',
     }
   )
 );
