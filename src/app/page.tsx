@@ -11,7 +11,7 @@ export default function Home() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <Image src="/folded.svg" alt="코드 아이콘" width={24} height={24} priority />
+              <Image src="/folded.svg" alt="분석 대상 아이콘" width={24} height={24} priority />
               분석 대상 입력
             </CardTitle>
             <CardDescription>코드를 직접 입력하거나 웹페이지 URL을 입력하세요</CardDescription>
