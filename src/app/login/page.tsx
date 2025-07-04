@@ -1,3 +1,57 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
+import Button from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import Separator from '@/components/ui/Separator';
+
 export default function Login() {
-  return <div>Login</div>;
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <div className="absolute top-4 left-4">
+        <Link href="/" className="flex items-center gap-2 font-medium">
+          <Image src="/arrow-left.svg" alt="돌아가기 아이콘" width={16} height={16} priority />
+          돌아가기
+        </Link>
+      </div>
+
+      <Card className="h-1/5 w-1/4 border-0 shadow-lg">
+        <CardHeader className="pb-4 text-center">
+          <CardTitle className="w-full justify-center text-xl">시작하기</CardTitle>
+          <CardDescription>
+            카카오 계정으로 간편하게 로그인하고
+            <br />
+            분석 결과를 저장하고 관리하세요
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Button className="h-12 w-full border-0 bg-[#FEE500] text-base font-medium text-black shadow-sm hover:bg-[#FDD835]">
+            <div className="flex items-center gap-3">
+              <svg width="18" height="17" viewBox="0 0 18 17" fill="none">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M8.99999 0.333374C13.7844 0.333374 17.6667 3.58671 17.6667 7.58337C17.6667 9.94171 16.4289 12.0417 14.4822 13.3334L13.1111 16.6667L9.33333 14.1667C9.22222 14.1667 9.11111 14.1667 8.99999 14.1667C4.21555 14.1667 0.333328 10.9134 0.333328 6.91671C0.333328 3.25004 4.21555 0.333374 8.99999 0.333374Z"
+                  fill="black"
+                />
+              </svg>
+              카카오로 시작하기
+            </div>
+          </Button>
+          <div className="relative">
+            <Separator />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="bg-white px-2 text-xs text-gray-500">또는</span>
+            </div>
+          </div>
+          <Button variant="outline" className="h-12 w-full" asChild>
+            <Link href="/">
+              게스트로 계속하기
+              <span className="ml-2 text-xs text-gray-500">(결과 저장 불가)</span>
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
