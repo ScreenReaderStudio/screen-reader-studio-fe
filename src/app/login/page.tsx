@@ -44,7 +44,7 @@ export default function Login() {
               <span className="bg-white px-2 text-xs text-gray-500">또는</span>
             </div>
           </div>
-          <Button variant="outline" className="h-12 w-full">
+          <Button variant="outline" className="h-12 w-full" asChild>
             <Link href="/">
               게스트로 계속하기
               <span className="ml-2 text-xs text-gray-500">(결과 저장 불가)</span>

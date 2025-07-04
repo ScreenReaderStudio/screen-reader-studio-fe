@@ -1,7 +1,9 @@
+import { Slot } from '@/components/ui/Slot';
 import { cn } from '@/utils/cn';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'secondary' | 'outline';
+  asChild?: boolean;
 }
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
@@ -16,10 +18,12 @@ export default function Button({
   disabled,
   variant = 'default',
   className,
+  asChild = false,
 }: ButtonProps) {
+  const Comp = asChild ? Slot : 'button';
+
   return (
-    <button
-      type="button"
+    <Comp
       className={cn(
         'inline-flex h-10 w-full items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50',
         variantClasses[variant],
@@ -29,6 +33,6 @@ export default function Button({
       disabled={disabled}
     >
       {children}
-    </button>
+    </Comp>
   );
 }
