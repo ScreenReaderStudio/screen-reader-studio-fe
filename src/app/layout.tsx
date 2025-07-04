@@ -1,7 +1,5 @@
 import localFont from 'next/font/local';
 
-import Header from '@/components/Header';
-
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -25,8 +23,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={`${pretendard.className} min-h-dvh w-full`}>
-        <Header />
-        <main className="p-4">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );
