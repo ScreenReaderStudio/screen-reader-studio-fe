@@ -2,14 +2,15 @@ import { Slot } from '@/components/ui/Slot';
 import { cn } from '@/utils/cn';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'secondary' | 'outline';
+  variant?: 'default' | 'secondary' | 'outline' | 'ghost';
   asChild?: boolean;
 }
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   default: 'hover:bg-gray-700 bg-gray-800 text-white',
   secondary: 'hover:bg-gray-50 bg-gray-100 text-gray-800',
-  outline: 'hover:bg-gray-100 bg-white text-gray-800 border border-gray-200 ',
+  outline: 'hover:bg-gray-100 bg-white text-gray-800 border border-gray-200',
+  ghost: 'hover:bg-gray-100 bg-transparent text-gray-800',
 };
 
 export default function Button({
