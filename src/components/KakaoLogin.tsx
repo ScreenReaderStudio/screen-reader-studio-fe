@@ -5,7 +5,7 @@ import Script from 'next/script';
 import Button from '@/components/ui/Button';
 
 export default function KakaoLogin() {
-  const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js';
+  const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js';
   const KAKAO_JAVASCRIPT_KEY = process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY;
 
   function handleLogin() {
@@ -20,7 +20,7 @@ export default function KakaoLogin() {
     <>
       <Script
         src={KAKAO_SDK_URL}
-        integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
+        integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6"
         crossOrigin="anonymous"
         onLoad={() => {
           if (window.Kakao && !window.Kakao.isInitialized()) {
