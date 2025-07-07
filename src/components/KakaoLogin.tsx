@@ -24,7 +24,11 @@ export default function KakaoLogin() {
         crossOrigin="anonymous"
         onLoad={() => {
           if (window.Kakao && !window.Kakao.isInitialized()) {
-            window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
+            try {
+              window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
+            } catch (error) {
+              console.error('Failed to initialize Kakao SDK:', error);
+            }
           }
         }}
       />
