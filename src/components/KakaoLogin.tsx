@@ -9,10 +9,12 @@ export default function KakaoLogin() {
   const KAKAO_JAVASCRIPT_KEY = process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY;
 
   function handleLogin() {
-    if (window.Kakao && window.Kakao.isInitialized()) {
+    if (window.Kakao?.isInitialized()) {
       window.Kakao.Auth.authorize({
         redirectUri: `${window.location.origin}/auth/kakao/callback`,
       });
+    } else {
+      console.error('Kakao SDK is not initialized');
     }
   }
 
