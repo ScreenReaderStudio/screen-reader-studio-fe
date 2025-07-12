@@ -17,6 +17,8 @@ export default function SelectContent({ children, className }: SelectContentProp
 
   return (
     <div
+      role="listbox"
+      aria-expanded={isOpen}
       className={cn(
         'absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white p-1 shadow-md',
         className
