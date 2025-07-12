@@ -15,6 +15,8 @@ export default function SelectTrigger({ children, className }: SelectTriggerProp
   return (
     <button
       type="button"
+      aria-expanded={isOpen}
+      aria-haspopup="listbox"
       className={cn(
         'flex h-10 w-full items-center justify-between rounded-md border border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
         className
@@ -24,10 +26,9 @@ export default function SelectTrigger({ children, className }: SelectTriggerProp
       {children}
       <Image
         src="/chevron-down.svg"
-        alt="선택 탭 열기 아이콘"
+        alt="스크린 리더 선택 드롭다운 확장 아이콘"
         width={16}
         height={16}
-        priority
         className="mr-2"
       />
     </button>
