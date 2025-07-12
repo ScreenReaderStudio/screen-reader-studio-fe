@@ -14,12 +14,18 @@ export default function SelectItem({ children, className, value }: SelectItemPro
   const { selectedValue, onValueChange } = useSelectContext();
 
   return (
-    <div
+    <button
+      type="button"
+      role="option"
+      aria-selected={selectedValue === value}
       className={cn(
         'relative flex w-full cursor-default items-center rounded-sm border border-transparent py-1.5 pr-2 pl-2 text-sm outline-none select-none hover:border-black hover:bg-gray-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         className
       )}
-      onClick={() => onValueChange(value)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onValueChange(value);
+      }}
     >
       {selectedValue === value ? (
         <Image
@@ -34,6 +40,6 @@ export default function SelectItem({ children, className, value }: SelectItemPro
         <div className="mr-2 w-4" />
       )}
       {children}
-    </div>
+    </button>
   );
 }
