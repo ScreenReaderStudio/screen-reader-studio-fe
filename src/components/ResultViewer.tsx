@@ -78,6 +78,8 @@ export default function ResultViewer() {
             src={iframeSrc}
             title="분석 결과 화면"
             className="h-full w-full border-0"
+            sandbox="allow-scripts allow-same-origin"
+            aria-label="분석된 웹 페이지 미리보기"
           />
         ) : (
           <div className="flex h-full items-center justify-center">
