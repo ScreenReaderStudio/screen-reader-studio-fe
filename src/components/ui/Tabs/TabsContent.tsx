@@ -16,5 +16,14 @@ export default function TabsContent({ children, className, value }: TabsContentP
     return null;
   }
 
-  return <div className={cn(className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        'mt-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
 }

@@ -12,7 +12,10 @@ export default function TabsList({ children, className }: TabsListProps) {
     <div
       role="tablist"
       aria-orientation="horizontal"
-      className={cn('items-center justify-center rounded-md bg-gray-100 p-1', className)}
+      className={cn(
+        'inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1',
+        className
+      )}
     >
       {children}
     </div>
