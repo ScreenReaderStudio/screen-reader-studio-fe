@@ -1,64 +1,108 @@
 'use client';
 
+import { useEffect, useMemo, useRef } from 'react';
+
+import IssuesList from '@/components/ResultViewer/IssuesList';
+import Placeholder from '@/components/ResultViewer/Placeholder';
+import ScreenReaderScript from '@/components/ResultViewer/ScreenReaderScript';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import { useResultStore } from '@/stores/useResultStore';
+import { useAnalysisStore } from '@/stores/useAnalysisStore';
 
 export default function ResultViewer() {
-  const result = useResultStore((state) => state.result);
+  const { isLoading, analysisResult, pageContent } = useAnalysisStore();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  if (!result || !Array.isArray(result.script) || result.script.length === 0) {
+  const iframeSrc = useMemo(() => {
+    if (!pageContent) {
+      return undefined;
+    }
+
+    const blob = new Blob([pageContent], { type: 'text/html' });
+
+    return URL.createObjectURL(blob);
+  }, [pageContent]);
+
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (iframeSrc) {
+        URL.revokeObjectURL(iframeSrc);
+      }
+    };
+  }, [iframeSrc]);
+
+  const postHighlightMessage = (selector: string) => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(
+        { type: 'highlight', selector },
+        window.location.origin
+      );
+    }
+  };
+
+  const handleHighlightAndSpeak = (selector: string, textToSpeak: string) => {
+    postHighlightMessage(selector);
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleHighlightOnly = (selector: string) => {
+    postHighlightMessage(selector);
+    window.speechSynthesis.cancel();
+  };
+
+  if (isLoading && !analysisResult) {
     return (
-      <div className="flex h-[370px] items-center justify-center text-gray-500">
-        코드를 입력하고 분석 버튼을 클릭하세요
+      <div className="flex h-[60vh] items-center justify-center">
+        <p>분석 중입니다. 잠시만 기다려주세요...</p>
       </div>
     );
   }
 
+  if (!analysisResult) {
+    return <Placeholder />;
+  }
+
   return (
-    <Tabs className="w-full" defaultValue="script">
-      <TabsList className="mb-1.5 grid w-full grid-cols-2">
-        <TabsTrigger value="script">스크린 리더 대본</TabsTrigger>
-        <TabsTrigger value="issue">접근성 이슈</TabsTrigger>
-      </TabsList>
+    <div className="flex h-[60vh] w-full gap-4">
+      <div className="flex-1 rounded-md border border-gray-300 p-0.5">
+        {iframeSrc ? (
+          <iframe
+            ref={iframeRef}
+            src={iframeSrc}
+            title="분석 결과 화면"
+            className="h-full w-full border-0"
+            sandbox="allow-scripts allow-same-origin"
+            aria-label="분석된 웹 페이지 미리보기"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            콘텐츠를 불러올 수 없습니다.
+          </div>
+        )}
+      </div>
 
-      <TabsContent value="script" className="space-y-2">
-        <div className="h-[324px] overflow-scroll">
-          <ul className="space-y-2 text-sm text-gray-700">
-            {result.script.map((item: string[], idx: number) => (
-              <li key={idx} className="flex gap-3 rounded-lg bg-gray-50 p-3">
-                <div className="flex items-center">{idx + 1}</div>
-                <div className="flex-1">
-                  <div className="text-md font-semibold">{item[1]}</div>
-                  <div className="mt-1 text-sm text-gray-500">{item[0]}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </TabsContent>
+      <div className="w-1/3 overflow-y-auto rounded-md border border-gray-300 p-4">
+        <Tabs defaultValue="script" className="w-full">
+          <TabsList className="mb-2 grid w-full grid-cols-2">
+            <TabsTrigger value="script">스크린 리더 대본</TabsTrigger>
+            <TabsTrigger value="issues">접근성 이슈</TabsTrigger>
+          </TabsList>
 
-      <TabsContent value="issue" className="space-y-2">
-        <div className="h-[324px] overflow-scroll">
-          {Object.keys(result.warnings).length === 0 ? (
-            <div className="px-4 py-2 text-sm text-gray-500">발견된 접근성 이슈가 없습니다.</div>
-          ) : (
-            <ul className="space-y-3 text-sm text-gray-700">
-              {Object.entries(result.warnings as Record<string, string[]>).map(
-                ([tag, messages]: [string, string[]]) => (
-                  <li key={tag} className="rounded-md border-l-4 border-red-400 bg-red-50 p-3">
-                    <div className="mb-1 font-semibold text-red-700">[{tag}]</div>
-                    <ul className="space-y-1 text-red-800">
-                      {messages.map((msg: string, idx: number) => (
-                        <li key={idx}>{msg}</li>
-                      ))}
-                    </ul>
-                  </li>
-                )
-              )}
-            </ul>
-          )}
-        </div>
-      </TabsContent>
-    </Tabs>
+          <TabsContent value="script">
+            <ScreenReaderScript onScriptItemClick={handleHighlightAndSpeak} />
+          </TabsContent>
+          <TabsContent value="issues">
+            <IssuesList onNodeClick={handleHighlightOnly} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
   );
 }

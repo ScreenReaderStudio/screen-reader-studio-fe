@@ -5,15 +5,17 @@ import Image from 'next/image';
 
 import TabsContextProvider from '@/components/TabsContextProvider';
 import Button from '@/components/ui/Button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { useTabsContext } from '@/components/ui/Tabs/context';
+import { useAnalysisStore } from '@/stores/useAnalysisStore';
 import { useInputStore } from '@/stores/useInputStore';
-import { useResultStore } from '@/stores/useResultStore';
-import detectAccessibilityWarnings from '@/utils/accessibility/detectAccessibilityWarnings';
-import formatAccessibilityIssueResult from '@/utils/accessibility/formatAccessibilityIssueResult';
-import analyzeAccessibility from '@/utils/ast/analyzeAccessibility';
-import formatScreenReaderScriptResult from '@/utils/screenReader/formatScreenReaderScriptResult';
-import generateScreenReaderScript from '@/utils/screenReader/generateScreenReaderScript';
 
 const CodeEditor = dynamic(() => import('@/components/CodeEditor'), {
   ssr: false,
@@ -24,53 +26,48 @@ function AccessibilityAnalyzerContent() {
   const code = useInputStore((state) => state.code);
   const url = useInputStore((state) => state.url);
   const setUrl = useInputStore((state) => state.setUrl);
-  const setResult = useResultStore((state) => state.setResult);
+  const { analyze, isLoading, selectedScreenReader, setSelectedScreenReader } = useAnalysisStore();
 
-  async function runAccessibilityAnalysis() {
-    try {
-      if (selectedTab === 'code') {
-        const extracted = analyzeAccessibility(code);
-        const rawScript = generateScreenReaderScript(extracted);
-        const script = formatScreenReaderScriptResult(rawScript);
-        const rawWarnings = detectAccessibilityWarnings(extracted);
-        const warnings = formatAccessibilityIssueResult(rawWarnings);
-
-        setResult({ script, warnings });
-      } else if (selectedTab === 'url') {
-        if (!url) {
-          alert('URL을 입력해주세요.');
-          return;
-        }
-
-        const res = await fetch(`/api/fetch-html?url=${encodeURIComponent(url)}`);
-        const { script, warnings } = await res.json();
-
-        setResult({ script, warnings });
+  async function handleAnalysisClick() {
+    if (selectedTab === 'code') {
+      if (!code) {
+        alert('코드를 입력해주세요.');
+        return;
       }
-    } catch (err) {
-      console.error('분석 실패:', err);
+      await analyze({ htmlContent: code });
+    } else {
+      if (!url) {
+        alert('URL을 입력해주세요.');
+        return;
+      }
+      await analyze({ url });
     }
   }
 
   return (
     <>
-      <div className="mb-2 flex gap-2">
-        <Button className="h-10 w-full bg-black text-white" onClick={runAccessibilityAnalysis}>
-          분석
+      <div className="mb-3 flex gap-2">
+        <Select
+          defaultValue={selectedScreenReader}
+          onValueChange={(value) => setSelectedScreenReader(value as 'voiceover' | 'nvda')}
+        >
+          <SelectTrigger className="w-60">
+            <SelectValue placeholder="VoiceOver (macOS/iOS)" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="voiceover">VoiceOver (macOS/iOS)</SelectItem>
+            <SelectItem value="nvda">NVDA (Windows)</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button
+          className="h-10 w-full bg-black text-white"
+          onClick={handleAnalysisClick}
+          disabled={isLoading}
+        >
+          {isLoading ? '분석 중...' : '분석'}
         </Button>
       </div>
-      <TabsList className="mb-2 grid w-full grid-cols-2">
-        <TabsTrigger value="code">
-          <Image
-            src="/code.svg"
-            alt="코드 아이콘"
-            width={16}
-            height={16}
-            priority
-            className="mr-2"
-          />
-          코드
-        </TabsTrigger>
+      <TabsList className="mb-3 grid w-full grid-cols-2">
         <TabsTrigger value="url">
           <Image
             src="/globe.svg"
@@ -82,15 +79,22 @@ function AccessibilityAnalyzerContent() {
           />
           URL
         </TabsTrigger>
+        <TabsTrigger value="code">
+          <Image
+            src="/code.svg"
+            alt="코드 아이콘"
+            width={16}
+            height={16}
+            priority
+            className="mr-2"
+          />
+          코드
+        </TabsTrigger>
       </TabsList>
-
-      <TabsContent value="code">
-        <CodeEditor />
-      </TabsContent>
 
       <TabsContent value="url">
         <input
-          className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring mb-2 flex h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+          className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring mb-3 flex h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
@@ -100,12 +104,15 @@ function AccessibilityAnalyzerContent() {
             <div>
               <p className="mb-1 font-medium">URL 분석 안내</p>
               <ul className="space-y-1 text-xs">
-                <li>• 분석 사이트가 React를 사용하는 경우 iframe을 허용해야 사용할 수 있습니다</li>
                 <li>• 분석에는 몇 초가 소요될 수 있습니다</li>
               </ul>
             </div>
           </div>
         </div>
+      </TabsContent>
+
+      <TabsContent value="code">
+        <CodeEditor />
       </TabsContent>
     </>
   );
@@ -113,7 +120,7 @@ function AccessibilityAnalyzerContent() {
 
 export default function AccessibilityAnalyzer() {
   return (
-    <TabsContextProvider className="w-full" defaultValue="code">
+    <TabsContextProvider className="w-full" defaultValue="url">
       <AccessibilityAnalyzerContent />
     </TabsContextProvider>
   );
