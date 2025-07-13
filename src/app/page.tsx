@@ -10,26 +10,30 @@ export default function Home() {
     <>
       <Header />
       <div className="mt-20 p-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <Card>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+          <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle>
                 <Image src="/folded.svg" alt="분석 대상 아이콘" width={24} height={24} priority />
                 분석 대상 입력
               </CardTitle>
-              <CardDescription>코드를 직접 입력하거나 웹페이지 URL을 입력하세요</CardDescription>
+              <CardDescription className="my-3">
+                코드를 직접 입력하거나 웹페이지 URL을 입력하세요
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <AccessibilityAnalyzer />
             </CardContent>
           </Card>
-          <Card>
+          <Card className="lg:col-span-3">
             <CardHeader>
               <CardTitle>
                 <Image src="/eye.svg" alt="결과 아이콘" width={24} height={24} priority />
                 분석 결과
               </CardTitle>
-              <CardDescription>스크린 리더 대본과 접근성 이슈를 확인하세요</CardDescription>
+              <CardDescription className="my-3">
+                스크린 리더 대본과 접근성 이슈를 확인하세요
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <ResultViewer />
