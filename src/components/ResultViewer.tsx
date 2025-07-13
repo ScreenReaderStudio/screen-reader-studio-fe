@@ -18,8 +18,15 @@ export default function ResultViewer() {
     }
 
     const blob = new Blob([pageContent], { type: 'text/html' });
+
     return URL.createObjectURL(blob);
   }, [pageContent]);
+
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
