@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import IssuesList from '@/components/ResultViewer/IssuesList';
 import Placeholder from '@/components/ResultViewer/Placeholder';
@@ -12,9 +12,29 @@ export default function ResultViewer() {
   const { isLoading, analysisResult, pageContent } = useAnalysisStore();
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  const iframeSrc = useMemo(() => {
+    if (!pageContent) {
+      return undefined;
+    }
+
+    const blob = new Blob([pageContent], { type: 'text/html' });
+    return URL.createObjectURL(blob);
+  }, [pageContent]);
+
+  useEffect(() => {
+    return () => {
+      if (iframeSrc) {
+        URL.revokeObjectURL(iframeSrc);
+      }
+    };
+  }, [iframeSrc]);
+
   const postHighlightMessage = (selector: string) => {
     if (iframeRef.current?.contentWindow) {
-      iframeRef.current.contentWindow.postMessage({ type: 'highlight', selector }, '*');
+      iframeRef.current.contentWindow.postMessage(
+        { type: 'highlight', selector },
+        window.location.origin
+      );
     }
   };
 
@@ -45,10 +65,10 @@ export default function ResultViewer() {
   return (
     <div className="flex h-[60vh] w-full gap-4">
       <div className="flex-1 rounded-md border border-gray-300 p-0.5">
-        {pageContent ? (
+        {iframeSrc ? (
           <iframe
             ref={iframeRef}
-            srcDoc={pageContent}
+            src={iframeSrc}
             title="분석 결과 화면"
             className="h-full w-full border-0"
           />
