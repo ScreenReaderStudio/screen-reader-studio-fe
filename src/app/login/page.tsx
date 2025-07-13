@@ -36,7 +36,7 @@ export default function Login() {
           <Button variant="outline" className="h-12 w-full" asChild>
             <Link href="/">
               게스트로 계속하기
-              <span className="ml-2 text-xs text-gray-500">(결과 저장 불가)</span>
+              <span className="text-xs text-gray-500">(결과 저장 불가)</span>
             </Link>
           </Button>
         </CardContent>
