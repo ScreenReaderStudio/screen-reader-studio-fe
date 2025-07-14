@@ -61,7 +61,7 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
     });
 
     try {
-      const response = await fetch('http://localhost:8080/api/analysis', {
+      const response = await fetch('/api/analysis', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

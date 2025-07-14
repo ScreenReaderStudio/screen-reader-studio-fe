@@ -55,7 +55,7 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
     });
 
     try {
-      const response = await fetch('http://localhost:8080/api/analysis/perform', {
+      const response = await fetch('/api/analysis/perform', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

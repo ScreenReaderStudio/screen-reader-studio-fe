@@ -24,7 +24,7 @@ export default function SharedAnalysisPage() {
       setError(null);
 
       try {
-        const response = await fetch(`http://localhost:8080/api/analysis/${id}`);
+        const response = await fetch(`/api/analysis/${id}`);
 
         if (!response.ok) {
           throw new Error('분석 결과를 불러오는데 실패했습니다.');
