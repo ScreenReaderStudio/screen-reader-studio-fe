@@ -50,7 +50,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-200 bg-white">
-      <div className="flex h-16 items-center justify-between px-4">
+      <div className="flex h-16 items-center justify-between px-6">
         <Link href="/" className="flex items-center text-lg font-bold tracking-tight">
           Screen Reader Studio
         </Link>
