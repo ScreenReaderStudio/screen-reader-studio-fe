@@ -16,6 +16,12 @@ interface AnalysisState {
   selectedScreenReader: 'voiceover' | 'nvda';
   setSelectedScreenReader: (reader: 'voiceover' | 'nvda') => void;
   analyze: (options: { url?: string; htmlContent?: string }) => Promise<void>;
+  setAnalysisData: (data: {
+    analysisResult: AxeResults | null;
+    screenReaderScript: ScreenReaderScriptItem[] | null;
+    pageContent: string | null;
+    selectedScreenReader: 'voiceover' | 'nvda';
+  }) => void;
 }
 
 export const useAnalysisStore = create<AnalysisState>((set) => ({
@@ -28,6 +34,16 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
 
   setSelectedScreenReader: (reader) => set({ selectedScreenReader: reader }),
 
+  setAnalysisData: ({ analysisResult, screenReaderScript, pageContent, selectedScreenReader }) =>
+    set({
+      analysisResult,
+      screenReaderScript,
+      pageContent,
+      selectedScreenReader,
+      isLoading: false,
+      error: null,
+    }),
+
   analyze: async ({ url, htmlContent }) => {
     const { selectedScreenReader } = useAnalysisStore.getState();
     set({
@@ -39,7 +55,7 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
     });
 
     try {
-      const response = await fetch('/api/analysis', {
+      const response = await fetch('/api/analysis/perform', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

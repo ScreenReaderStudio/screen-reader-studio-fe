@@ -2,42 +2,25 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 
 import Button from '@/components/ui/Button';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    async function checkLoginStatus() {
-      try {
-        const response = await fetch('/api/users/me');
-
-        if (response.ok) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-        }
-      } catch (error) {
-        console.error('로그인 상태 확인 중 에러 발생', error);
-
-        setIsLoggedIn(false);
-      }
-    }
-
-    checkLoginStatus();
-  }, []);
 
   async function handleLogout() {
     try {
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       if (response.ok) {
-        setIsLoggedIn(false);
+        logout();
         router.push('/');
         router.refresh();
       } else {

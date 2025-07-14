@@ -3,9 +3,12 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { useAuth } from '@/contexts/AuthContext';
+
 export default function KakaoCallback() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { login } = useAuth();
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -25,6 +28,8 @@ export default function KakaoCallback() {
           });
 
           if (response.ok) {
+            const { user } = await response.json();
+            login(user);
             router.replace('/');
           } else {
             const errorData = await response.json();
@@ -42,7 +47,7 @@ export default function KakaoCallback() {
       alert('비정상적인 접근입니다.');
       router.replace('/login');
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, login]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center">

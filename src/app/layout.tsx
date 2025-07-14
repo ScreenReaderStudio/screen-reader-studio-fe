@@ -1,5 +1,7 @@
 import localFont from 'next/font/local';
 
+import { AuthProvider } from '@/contexts/AuthContext';
+
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={`${pretendard.className} min-h-dvh w-full`}>
-        <main>{children}</main>
+        <AuthProvider>
+          <main>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );
