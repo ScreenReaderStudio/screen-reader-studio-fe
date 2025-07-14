@@ -83,12 +83,17 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
     }
   }
 
-  function handleCopyLink() {
+  async function handleCopyLink() {
     if (!shareableLink) {
       return;
     }
-    navigator.clipboard.writeText(shareableLink);
-    alert('공유 링크가 클립보드에 복사되었습니다.');
+    try {
+      await navigator.clipboard.writeText(shareableLink);
+      alert('공유 링크가 클립보드에 복사되었습니다.');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+      alert('링크 복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
+    }
   }
 
   function postHighlightMessage(selector: string) {
