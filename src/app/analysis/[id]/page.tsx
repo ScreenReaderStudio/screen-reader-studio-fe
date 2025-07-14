@@ -19,15 +19,22 @@ export default function SharedAnalysisPage() {
       return;
     }
 
+    const controller = new AbortController();
+    const { signal } = controller;
+
     async function fetchAnalysis() {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetch(`/api/analysis/${id}`);
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+        const response = await fetch(`${backendUrl}/api/analysis/${id}`, { signal });
 
         if (!response.ok) {
-          throw new Error('분석 결과를 불러오는데 실패했습니다.');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(
+            errorData.message || `분석 결과를 불러오는데 실패했습니다. (상태: ${response.status})`
+          );
         }
 
         const data = await response.json();
@@ -38,13 +45,22 @@ export default function SharedAnalysisPage() {
           selectedScreenReader: data.selectedScreenReader,
         });
       } catch (err) {
-        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
+        if (err instanceof Error && err.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          const message = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
+          setError(message);
+        }
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchAnalysis();
+
+    return () => {
+      controller.abort();
+    };
   }, [id, setAnalysisData]);
 
   if (isLoading) {
