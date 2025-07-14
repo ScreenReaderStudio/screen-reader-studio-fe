@@ -25,23 +25,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           credentials: 'include',
         });
 
-        console.log('AuthContext: API response status', response.status);
-
         if (response.ok) {
           const userData = await response.json();
-          console.log('AuthContext: User data received', userData);
           setUser(userData);
         } else {
-          console.log('AuthContext: User not logged in or session expired');
           setUser(null);
         }
-      } catch (error) {
-        console.error('AuthContext: Failed to fetch user:', error);
+      } catch {
         setUser(null);
       } finally {
         setIsLoading(false);
-        console.log('AuthContext: isLoading set to false');
-        console.log('AuthContext: Final isLoggedIn state', !isLoading && !!user);
       }
     }
 
