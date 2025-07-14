@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
 interface User {
   userId: string;
@@ -10,6 +10,8 @@ interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
   isLoading: boolean;
+  login: (userData: User) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,33 +20,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await fetch('http://localhost:8080/api/users/me', {
-          credentials: 'include',
-        });
+  const fetchUser = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/users/me', {
+        credentials: 'include',
+      });
 
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          setUser(null);
-        }
-      } catch {
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
         setUser(null);
-      } finally {
-        setIsLoading(false);
       }
+    } catch {
+      setUser(null);
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
+  useEffect(() => {
     fetchUser();
+  }, [fetchUser]);
+
+  const login = useCallback((userData: User) => {
+    setUser(userData);
+  }, []);
+
+  const logout = useCallback(() => {
+    setUser(null);
   }, []);
 
   const value = {
     user,
     isLoggedIn: !isLoading && !!user,
     isLoading,
+    login,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
