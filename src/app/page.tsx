@@ -9,7 +9,14 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="mt-20 p-6">
+      <div className="p-6">
+        <div className="mb-8">
+          <h1 className="mb-3 text-3xl font-bold text-gray-900">접근성 분석기</h1>
+          <p className="text-gray-600">
+            웹페이지 URL이나 HTML 코드를 입력하여 스크린 리더가 어떻게 읽어주는지 확인하고 접근성
+            문제를 개선하세요
+          </p>
+        </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           <Card className="lg:col-span-2">
             <CardHeader>
