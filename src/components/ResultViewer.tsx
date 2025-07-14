@@ -40,25 +40,14 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
 
   async function handleSaveResult() {
     if (!analysisResult || !pageContent || !screenReaderScript) {
-      console.error('Save failed: Missing analysisResult, pageContent, or screenReaderScript', {
-        analysisResult: !!analysisResult,
-        pageContent: !!pageContent,
-        screenReaderScript: !!screenReaderScript,
-      });
       alert('분석할 URL 또는 HTML 콘텐츠가 없습니다. 먼저 분석을 수행해주세요.');
+
       return;
     }
 
     setIsSaving(true);
     setShareableLink('');
     setIsSaved(false);
-
-    console.log('Attempting to save analysis with data:', {
-      pageContent: pageContent ? '[Content Exists]' : '[No Content]',
-      accessibilityAnalysis: analysisResult ? '[Analysis Exists]' : '[No Analysis]',
-      screenReaderScript: screenReaderScript ? '[Script Exists]' : '[No Script]',
-      selectedScreenReader: selectedScreenReader,
-    });
 
     try {
       const response = await fetch('/api/analysis', {
@@ -88,7 +77,6 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
       setIsSaved(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-      console.error('Failed to save analysis:', error);
       alert(message);
     } finally {
       setIsSaving(false);
