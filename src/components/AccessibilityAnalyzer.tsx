@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/Select';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { useTabsContext } from '@/components/ui/Tabs/context';
+import { useToast } from '@/contexts/ToastContext';
 import { useAnalysisStore } from '@/stores/useAnalysisStore';
 import { useInputStore } from '@/stores/useInputStore';
 
@@ -27,17 +28,18 @@ function AccessibilityAnalyzerContent() {
   const url = useInputStore((state) => state.url);
   const setUrl = useInputStore((state) => state.setUrl);
   const { analyze, isLoading, selectedScreenReader, setSelectedScreenReader } = useAnalysisStore();
+  const { showToast } = useToast();
 
   async function handleAnalysisClick() {
     if (selectedTab === 'code') {
       if (!code) {
-        alert('코드를 입력해주세요.');
+        showToast({ message: '코드를 입력해주세요.' });
         return;
       }
       await analyze({ htmlContent: code });
     } else {
       if (!url) {
-        alert('URL을 입력해주세요.');
+        showToast({ message: 'URL을 입력해주세요.' });
         return;
       }
       await analyze({ url });
