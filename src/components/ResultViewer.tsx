@@ -8,6 +8,7 @@ import ScreenReaderScript from '@/components/ResultViewer/ScreenReaderScript';
 import Button from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/contexts/ToastContext';
 import { useAnalysisStore } from '@/stores/useAnalysisStore';
 
 export default function ResultViewer({ showShareButton = true }: { showShareButton?: boolean }) {
@@ -19,6 +20,7 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
   const [isSaved, setIsSaved] = useState(false);
 
   const { isLoggedIn } = useAuth();
+  const { showToast } = useToast();
 
   const iframeSrc = useMemo(() => {
     if (!pageContent) {
@@ -40,7 +42,7 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
 
   async function handleSaveResult() {
     if (!analysisResult || !pageContent || !screenReaderScript) {
-      alert('분석할 URL 또는 HTML 콘텐츠가 없습니다. 먼저 분석을 수행해주세요.');
+      showToast({ message: '분석할 URL 또는 HTML 콘텐츠가 없습니다. 먼저 분석을 수행해주세요.' });
 
       return;
     }
@@ -77,7 +79,7 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
       setIsSaved(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-      alert(message);
+      showToast({ message });
     } finally {
       setIsSaving(false);
     }
@@ -89,10 +91,10 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
     }
     try {
       await navigator.clipboard.writeText(shareableLink);
-      alert('공유 링크가 클립보드에 복사되었습니다.');
+      showToast({ message: '공유 링크가 클립보드에 복사되었습니다.' });
     } catch (error) {
       console.error('클립보드 복사 실패:', error);
-      alert('링크 복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
+      showToast({ message: '링크 복사에 실패했습니다. 브라우저 설정을 확인해주세요.' });
     }
   }
 

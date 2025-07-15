@@ -1,6 +1,7 @@
 import localFont from 'next/font/local';
 
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ToastProvider } from '@/contexts/ToastContext';
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={`${pretendard.className} min-h-dvh w-full`}>
         <AuthProvider>
-          <main>{children}</main>
+          <ToastProvider>
+            <main>{children}</main>
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>
