@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo } from 'react';
 
 export const TOAST_PLACEMENTS = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'] as const;
 
@@ -68,14 +68,16 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
     [removeToast]
   );
 
-  const toastsByPlacement = toasts.reduce(
-    (acc, toast) => {
-      acc[toast.placement] = acc[toast.placement] || [];
-      acc[toast.placement].push(toast);
-      return acc;
-    },
-    {} as Record<ToastPlacement, ToastType[]>
-  );
+  const toastsByPlacement = useMemo(() => {
+    return toasts.reduce(
+      (acc, toast) => {
+        acc[toast.placement] = acc[toast.placement] || [];
+        acc[toast.placement].push(toast);
+        return acc;
+      },
+      {} as Record<ToastPlacement, ToastType[]>
+    );
+  }, [toasts]);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
