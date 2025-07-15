@@ -90,7 +90,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
           {placementToasts.map((toast) => (
             <div
               key={toast.id}
-              className="animate-fade-in relative w-fit max-w-[90vw] min-w-40 rounded border border-gray-200 bg-white py-2 pr-8 pl-4 text-gray-800 shadow-md"
+              className="relative w-fit max-w-[90vw] min-w-40 rounded border border-gray-200 bg-white py-2 pr-8 pl-4 text-gray-800 shadow-md"
             >
               <p className="font-sans text-sm">{toast.message}</p>
               <button
