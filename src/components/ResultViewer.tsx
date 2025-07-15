@@ -121,8 +121,24 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
 
   if (isLoading && !analysisResult) {
     return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <p>분석 중입니다. 잠시만 기다려주세요...</p>
+      <div className="flex h-[60vh] w-full animate-pulse gap-4">
+        <div className="flex-1 rounded-md border border-gray-300 bg-gray-200"></div>
+
+        <div className="w-1/3 space-y-4 rounded-md border border-gray-300 bg-gray-200 p-4">
+          <div className="flex w-full gap-2">
+            <div className="h-10 flex-1 rounded-md bg-gray-300"></div>
+            <div className="h-10 flex-1 rounded-md bg-gray-300"></div>
+          </div>
+
+          <div className="space-y-3 pt-2">
+            <div className="h-4 w-full rounded-md bg-gray-300"></div>
+            <div className="h-4 w-5/6 rounded-md bg-gray-300"></div>
+            <div className="h-4 w-full rounded-md bg-gray-300"></div>
+            <div className="h-4 w-4/6 rounded-md bg-gray-300"></div>
+            <div className="h-4 w-full rounded-md bg-gray-300"></div>
+            <div className="h-4 w-3/4 rounded-md bg-gray-300"></div>
+          </div>
+        </div>
       </div>
     );
   }
