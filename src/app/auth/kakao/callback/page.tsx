@@ -4,11 +4,13 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/contexts/ToastContext';
 
 export default function KakaoCallback() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { login } = useAuth();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -37,17 +39,17 @@ export default function KakaoCallback() {
           }
         } catch (error) {
           console.error('카카오 로그인 처리 실패:', error);
-          alert('로그인에 실패했습니다. 다시 시도해주세요.');
+          showToast({ message: '로그인에 실패했습니다. 다시 시도해주세요.' });
           router.replace('/login');
         }
       }
 
       sendCodeToBackend();
     } else {
-      alert('비정상적인 접근입니다.');
+      showToast({ message: '비정상적인 접근입니다.' });
       router.replace('/login');
     }
-  }, [searchParams, router, login]);
+  }, [searchParams, router, login, showToast]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center">
