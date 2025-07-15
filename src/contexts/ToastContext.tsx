@@ -90,9 +90,16 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
           {placementToasts.map((toast) => (
             <div
               key={toast.id}
-              className="animate-fade-in relative w-fit max-w-[90vw] min-w-40 rounded border border-gray-200 bg-white px-4 py-2 text-gray-800 shadow-md"
+              className="animate-fade-in relative w-fit max-w-[90vw] min-w-40 rounded border border-gray-200 bg-white py-2 pr-8 pl-4 text-gray-800 shadow-md"
             >
               <p className="font-sans text-sm">{toast.message}</p>
+              <button
+                onClick={() => removeToast(toast.id)}
+                className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full p-1 text-lg text-gray-500 hover:bg-gray-100"
+                aria-label="알림 닫기"
+              >
+                ×
+              </button>
             </div>
           ))}
         </div>
