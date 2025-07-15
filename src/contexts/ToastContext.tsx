@@ -1,0 +1,102 @@
+'use client';
+
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+
+export const TOAST_PLACEMENTS = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'] as const;
+
+type ToastPlacement = (typeof TOAST_PLACEMENTS)[number];
+
+interface ToastType {
+  id: number;
+  message: string;
+  placement: ToastPlacement;
+}
+
+export interface ToastOptions {
+  message: string;
+  placement?: ToastPlacement;
+  duration?: number;
+}
+
+export interface ToastContextType {
+  showToast: (options: ToastOptions) => void;
+}
+
+const ToastContext = createContext<ToastContextType | null>(null);
+
+const getPlacementClass = (placement: ToastPlacement) => {
+  switch (placement) {
+    case 'topLeft':
+      return 'top-4 left-4';
+    case 'topRight':
+      return 'top-4 right-4';
+    case 'bottomLeft':
+      return 'bottom-4 left-4';
+    case 'bottomRight':
+      return 'bottom-4 right-4';
+  }
+};
+
+export const useToast = () => {
+  const context = useContext(ToastContext);
+
+  if (!context) {
+    throw new Error('useToast must be used within a ToastProvider');
+  }
+
+  return context;
+};
+
+interface ToastProviderProps {
+  children: ReactNode;
+}
+
+export const ToastProvider = ({ children }: ToastProviderProps) => {
+  const [toasts, setToasts] = useState<ToastType[]>([]);
+
+  const removeToast = useCallback((id: number) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+  }, []);
+
+  const showToast = useCallback(
+    ({ message, placement = 'topRight', duration = 3000 }: ToastOptions) => {
+      const id = Date.now();
+      setToasts((prevToasts) => [...prevToasts, { id, message, placement }]);
+
+      setTimeout(() => removeToast(id), duration);
+    },
+    [removeToast]
+  );
+
+  const toastsByPlacement = toasts.reduce(
+    (acc, toast) => {
+      acc[toast.placement] = acc[toast.placement] || [];
+      acc[toast.placement].push(toast);
+      return acc;
+    },
+    {} as Record<ToastPlacement, ToastType[]>
+  );
+
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {children}
+      {Object.entries(toastsByPlacement).map(([placement, placementToasts]) => (
+        <div
+          key={placement}
+          className={`fixed z-50 space-y-2 px-6 pt-16 ${getPlacementClass(
+            placement as ToastPlacement
+          )}`}
+        >
+          {placementToasts.map((toast) => (
+            <div
+              key={toast.id}
+              className="animate-fade-in relative w-fit max-w-[90vw] min-w-40 rounded border border-gray-200 bg-white px-4 py-2 text-gray-800 shadow-md"
+            >
+              <p className="font-sans text-sm">{toast.message}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+    </ToastContext.Provider>
+  );
+};
