@@ -27,8 +27,7 @@ export default function SharedAnalysisPage() {
       setError(null);
 
       try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
-        const response = await fetch(`${backendUrl}/api/analysis/${id}`, { signal });
+        const response = await fetch(`/api/analysis/${id}`, { signal });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));

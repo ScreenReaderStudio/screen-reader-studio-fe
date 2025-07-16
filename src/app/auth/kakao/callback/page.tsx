@@ -18,9 +18,7 @@ export default function KakaoCallback() {
     if (code) {
       async function sendCodeToBackend() {
         try {
-          const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
-
-          const response = await fetch(`${backendUrl}/api/auth/kakao`, {
+          const response = await fetch('/api/auth/kakao', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
