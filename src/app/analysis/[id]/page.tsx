@@ -27,7 +27,10 @@ export default function SharedAnalysisPage() {
       setError(null);
 
       try {
-        const response = await fetch(`/api/analysis/${id}`, { signal });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/analysis/${id}`,
+          { signal }
+        );
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));

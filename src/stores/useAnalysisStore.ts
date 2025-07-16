@@ -55,13 +55,16 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
     });
 
     try {
-      const response = await fetch('/api/analysis/perform', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url, htmlContent, screenReader: selectedScreenReader }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/analysis/perform`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url, htmlContent, screenReader: selectedScreenReader }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

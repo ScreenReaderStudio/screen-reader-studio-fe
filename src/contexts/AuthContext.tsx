@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchUser = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/users/me', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/users/me`, {
         credentials: 'include',
       });
 

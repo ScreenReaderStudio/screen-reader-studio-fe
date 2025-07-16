@@ -18,14 +18,17 @@ function KakaoCallbackContent() {
     if (code) {
       async function sendCodeToBackend() {
         try {
-          const response = await fetch('/api/auth/kakao', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-            credentials: 'include',
-          });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/auth/kakao`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ code }),
+              credentials: 'include',
+            }
+          );
 
           if (response.ok) {
             const { user } = await response.json();

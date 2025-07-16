@@ -52,7 +52,7 @@ export default function ResultViewer({ showShareButton = true }: { showShareButt
     setIsSaved(false);
 
     try {
-      const response = await fetch('/api/analysis', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/analysis`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
