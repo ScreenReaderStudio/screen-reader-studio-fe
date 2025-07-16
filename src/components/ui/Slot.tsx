@@ -6,11 +6,18 @@ interface SlotProps extends React.HTMLAttributes<HTMLElement> {
 
 const Slot = React.forwardRef<HTMLElement, SlotProps>(({ children, ...props }, ref) => {
   if (React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      ...props,
-      ...children.props,
+    const typedChildren = children as React.ReactElement<
+      React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
+    >;
+
+    const { className: childClassName, ...childProps } = typedChildren.props;
+    const { className: slotClassName, ...slotProps } = props;
+
+    return React.cloneElement(typedChildren, {
       ref,
-      className: [props.className, children.props.className].filter(Boolean).join(' '),
+      ...slotProps,
+      ...childProps,
+      className: [slotClassName, childClassName].filter(Boolean).join(' '),
     });
   }
 
