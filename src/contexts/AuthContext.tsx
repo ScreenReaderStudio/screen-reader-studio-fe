@@ -30,7 +30,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
+      } else if (response.status === 401) {
+        setUser(null);
       } else {
+        console.error(`Failed to fetch user: ${response.status}`);
         setUser(null);
       }
     } catch {
