@@ -16,8 +16,6 @@
     ]
   },
   "dependencies": {
-    "@babel/parser": "^7.27.7",
-    "@babel/traverse": "^7.27.7",
     "@codemirror/lang-javascript": "^6.2.4",
     "@uiw/react-codemirror": "^4.23.14",
     "clsx": "^2.1.1",
@@ -33,9 +31,6 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/babel__traverse": "^7.20.7",
-    "@types/jsdom": "^21.1.7",
-    "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/parser": "^8.35.0",
