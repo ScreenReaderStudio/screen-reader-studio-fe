@@ -106,7 +106,7 @@ function AccessibilityAnalyzerContent() {
             <div>
               <p className="mb-1 font-medium">URL 분석 안내</p>
               <ul className="space-y-1 text-xs">
-                <li>• 분석에는 몇 초가 소요될 수 있습니다</li>
+                <li>• 분석에는 다소 시간이 소요될 수 있습니다 (최대 1분 내외)</li>
               </ul>
             </div>
           </div>
