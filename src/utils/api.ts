@@ -25,9 +25,7 @@ export async function apiRequest<T = unknown>(url: string, options: RequestInit 
 
     try {
       errorData = await response.json();
-    } catch {
-      // JSON 파싱 실패 시 기본 메시지 사용
-    }
+    } catch {}
 
     throw new ApiError(
       errorData.message || `요청이 실패했습니다. (상태: ${response.status})`,

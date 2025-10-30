@@ -22,7 +22,6 @@ export function copyToClipboard(text: string): Promise<void> {
     return navigator.clipboard.writeText(text);
   }
 
-  // Fallback for older browsers or non-secure contexts
   return new Promise((resolve, reject) => {
     const textArea = document.createElement('textarea');
     textArea.value = text;
