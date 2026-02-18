@@ -8,5 +8,7 @@ interface CardDescriptionProps {
 }
 
 export default function CardDescription({ children, className }: CardDescriptionProps) {
-  return <p className={cn('my-2 text-sm text-gray-600', className)}>{children}</p>;
+  return (
+    <p className={cn('my-2 text-sm text-gray-600 dark:text-gray-400', className)}>{children}</p>
+  );
 }

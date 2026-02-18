@@ -66,12 +66,18 @@ export default function SharedAnalysisPage() {
   }, [id, setAnalysisData]);
 
   if (isLoading) {
-    return <div className="flex h-screen items-center justify-center">결과를 불러오는 중...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center text-gray-900 dark:text-gray-100">
+        결과를 불러오는 중...
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="flex h-screen items-center justify-center text-red-500">오류: {error}</div>
+      <div className="flex h-screen items-center justify-center text-red-500 dark:text-red-400">
+        오류: {error}
+      </div>
     );
   }
 
@@ -79,8 +85,10 @@ export default function SharedAnalysisPage() {
     <>
       <Header />
       <div className="p-6">
-        <h1 className="mb-3 text-2xl font-bold">접근성 분석 리포트</h1>
-        <p className="mb-3 text-gray-600">
+        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-gray-100">
+          접근성 분석 리포트
+        </h1>
+        <p className="mb-3 text-gray-600 dark:text-gray-400">
           {analysisResult?.url}의 접근성 분석 결과입니다. 스크린 리더 대본을 생성할 때{' '}
           {screenReader[selectedScreenReader]}를 기준으로 생성되었습니다.
         </p>

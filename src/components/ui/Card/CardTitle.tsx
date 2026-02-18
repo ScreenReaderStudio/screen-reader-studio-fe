@@ -11,7 +11,7 @@ export default function CardTitle({ children, className }: CardTitleProps) {
   return (
     <h3
       className={cn(
-        'flex items-center gap-2 text-2xl leading-none font-semibold tracking-tight',
+        'flex items-center gap-2 text-2xl leading-none font-semibold tracking-tight text-gray-900 dark:text-gray-100',
         className
       )}
     >

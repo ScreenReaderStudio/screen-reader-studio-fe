@@ -96,12 +96,12 @@ function AccessibilityAnalyzerContent() {
 
       <TabsContent value="url">
         <input
-          className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring mb-3 flex h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+          className="border-input bg-background ring-offset-background file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring mb-3 flex h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <div className="rounded-md bg-blue-100 p-4 font-medium text-blue-800">
+        <div className="rounded-md bg-blue-100 p-4 font-medium text-blue-800 dark:bg-blue-950/30 dark:text-blue-200">
           <div className="flex items-start gap-3">
             <div>
               <p className="mb-1 font-medium">URL 분석 안내</p>

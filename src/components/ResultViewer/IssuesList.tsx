@@ -6,24 +6,28 @@ import { useAnalysisStore } from '@/stores/useAnalysisStore';
 
 const impactStyles: { [key: string]: { container: string; badge: string; title: string } } = {
   critical: {
-    container: 'border-red-300 bg-red-50',
-    badge: 'bg-red-100 text-red-800 border-transparent hover:bg-red-200/60',
-    title: 'text-red-900',
+    container: 'border-red-300 bg-red-50 dark:border-red-800 dark:bg-red-950/30',
+    badge:
+      'bg-red-100 text-red-800 border-transparent hover:bg-red-200/60 dark:bg-red-900/50 dark:text-red-200 dark:hover:bg-red-900/70',
+    title: 'text-red-900 dark:text-red-200',
   },
   serious: {
-    container: 'border-orange-300 bg-orange-50',
-    badge: 'bg-orange-100 text-orange-800 border-transparent hover:bg-orange-200/60',
-    title: 'text-orange-900',
+    container: 'border-orange-300 bg-orange-50 dark:border-orange-800 dark:bg-orange-950/30',
+    badge:
+      'bg-orange-100 text-orange-800 border-transparent hover:bg-orange-200/60 dark:bg-orange-900/50 dark:text-orange-200 dark:hover:bg-orange-900/70',
+    title: 'text-orange-900 dark:text-orange-200',
   },
   moderate: {
-    container: 'border-yellow-300 bg-yellow-50',
-    badge: 'bg-yellow-100 text-yellow-800 border-transparent hover:bg-yellow-200/60',
-    title: 'text-yellow-900',
+    container: 'border-yellow-300 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/30',
+    badge:
+      'bg-yellow-100 text-yellow-800 border-transparent hover:bg-yellow-200/60 dark:bg-yellow-900/50 dark:text-yellow-200 dark:hover:bg-yellow-900/70',
+    title: 'text-yellow-900 dark:text-yellow-200',
   },
   minor: {
-    container: 'border-gray-200 bg-white',
-    badge: 'bg-gray-100 text-gray-800 border-transparent hover:bg-gray-200/60',
-    title: 'text-gray-900',
+    container: 'border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800',
+    badge:
+      'bg-gray-100 text-gray-800 border-transparent hover:bg-gray-200/60 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600',
+    title: 'text-gray-900 dark:text-gray-100',
   },
 };
 
@@ -52,15 +56,17 @@ export default function IssuesList({ onNodeClick }: { onNodeClick: (selector: st
     return <p>접근성 이슈를 분석 중입니다...</p>;
   }
   if (error) {
-    return <p className="text-red-600">오류: {error}</p>;
+    return <p className="text-red-600 dark:text-red-400">오류: {error}</p>;
   }
   if (!analysisResult || sortedViolations.length === 0) {
-    return <p>발견된 접근성 이슈가 없습니다.</p>;
+    return <p className="text-gray-900 dark:text-gray-100">발견된 접근성 이슈가 없습니다.</p>;
   }
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">총 {sortedViolations.length}개의 위반 사항 발견</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        총 {sortedViolations.length}개의 위반 사항 발견
+      </p>
       <ul className="space-y-3">
         {sortedViolations.map((violation) => {
           const styles = impactStyles[violation.impact || 'minor'] || impactStyles.minor;
@@ -72,19 +78,25 @@ export default function IssuesList({ onNodeClick }: { onNodeClick: (selector: st
             >
               <div className="flex items-start justify-between gap-4">
                 <p className={`font-semibold ${styles.title}`}>{violation.help}</p>
-                <div className={`shrink-0 capitalize ${styles.badge}`}>{violation.impact}</div>
+                <div className={`shrink-0 rounded px-2 py-1 text-xs capitalize ${styles.badge}`}>
+                  {violation.impact}
+                </div>
               </div>
-              <p className="mt-2 text-sm text-gray-600">{violation.description}</p>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                {violation.description}
+              </p>
               <a
                 href={violation.helpUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1 block text-sm text-blue-500 hover:underline"
+                className="mt-1 block text-sm text-blue-500 hover:underline dark:text-blue-400"
               >
                 자세히 보기
               </a>
               <div className="mt-3 space-y-2">
-                <h4 className="text-sm font-semibold">영향 요소:</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  영향 요소:
+                </h4>
                 {violation.nodes.map((node, nodeIndex) => {
                   const target = node.target;
                   const selector = Array.isArray(target) ? target[0] : target;
@@ -93,7 +105,7 @@ export default function IssuesList({ onNodeClick }: { onNodeClick: (selector: st
                     return (
                       <div
                         key={nodeIndex}
-                        className="rounded bg-gray-50 p-2 font-mono text-xs break-all"
+                        className="rounded bg-gray-50 p-2 font-mono text-xs break-all dark:bg-gray-800 dark:text-gray-200"
                       >
                         <code>{node.html}</code>
                       </div>
@@ -103,7 +115,7 @@ export default function IssuesList({ onNodeClick }: { onNodeClick: (selector: st
                   return (
                     <div
                       key={nodeIndex}
-                      className="cursor-pointer rounded bg-gray-50 p-2 font-mono text-xs break-all transition-colors hover:bg-gray-100"
+                      className="cursor-pointer rounded bg-gray-50 p-2 font-mono text-xs break-all transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                       onClick={() => onNodeClick(selector)}
                     >
                       <code>{node.html}</code>

@@ -19,7 +19,7 @@ export default function SelectItem({ children, className, value }: SelectItemPro
       role="option"
       aria-selected={selectedValue === value}
       className={cn(
-        'relative flex w-full cursor-default items-center rounded-sm border border-transparent py-1.5 pr-2 pl-2 text-sm outline-none select-none hover:border-black hover:bg-gray-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'relative flex w-full cursor-default items-center rounded-sm border border-transparent py-1.5 pr-2 pl-2 text-sm outline-none select-none hover:border-black hover:bg-gray-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-gray-200 dark:hover:border-gray-600 dark:hover:bg-gray-800',
         className
       )}
       onClick={(e) => {

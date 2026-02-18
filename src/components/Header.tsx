@@ -32,9 +32,12 @@ export default function Header() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
       <div className="flex h-16 items-center justify-between px-6">
-        <Link href="/" className="flex items-center text-lg font-bold tracking-tight">
+        <Link
+          href="/"
+          className="flex items-center text-lg font-bold tracking-tight text-gray-900 dark:text-gray-100"
+        >
           Screen Reader Studio
         </Link>
         {isLoggedIn ? (
