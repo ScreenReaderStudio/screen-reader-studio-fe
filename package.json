@@ -2,6 +2,9 @@
   "name": "screenreaderstudio-fe",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -23,7 +26,7 @@
     "@uiw/react-codemirror": "^4.23.14",
     "clsx": "^2.1.1",
     "jsdom": "^26.1.0",
-    "next": "^15.3.8",
+    "next": "^15.5.28",
     "radix-ui": "^1.6.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -41,11 +44,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/parser": "^8.35.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "^2.1.9",
-    "@vitest/ui": "^2.1.8",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/ui": "^4.1.12",
     "eslint": "^9",
-    "eslint-config-next": "^15.3.4",
+    "eslint-config-next": "^15.5.28",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -55,6 +58,11 @@
     "prettier-plugin-tailwindcss": "^0.6.13",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^2.1.9"
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.23"
+    }
   }
 }
